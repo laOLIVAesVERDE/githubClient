@@ -37,7 +37,7 @@
                 android:layout_width="@dimen/logo_width"
                 android:layout_height="@dimen/logo_height"
                 android:src="@drawable/github"
-                android:contentDescription="TODO" />
+                android:contentDescription="@null" />
 
             <TextView
                 android:id="@+id/name"
@@ -87,7 +87,7 @@
                 android:id="@+id/project_created_at"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="Created At"
+                android:contentDescription="@null"
                 android:textSize="@dimen/project_text"
                 android:text="@{String.format(@string/created_at, projectViewModel.project.created_at)}"/>
 
@@ -95,7 +95,7 @@
                 android:id="@+id/project_updated_at"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="Updated At"
+                android:contentDescription="@null"
                 android:textSize="@dimen/project_text"
                 android:text="@{String.format(@string/updated_at, projectViewModel.project.updated_at)}"/>
 

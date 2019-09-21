@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import android.view.ViewGroup
 import jp.sample.tsutou.githubClient.R
 import jp.sample.tsutou.githubClient.databinding.FragmentProjectDetailsBinding
 import jp.sample.tsutou.githubClient.viewModel.ProjectViewModel
-
-import java.util.Objects
 
 private const val KEY_PROJECT_ID = "project_id"
 
