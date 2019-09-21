@@ -1,7 +1,7 @@
 package jp.sample.tsutou.githubClient.view.ui
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import jp.sample.tsutou.githubClient.R
 import jp.sample.tsutou.githubClient.service.model.Project
 

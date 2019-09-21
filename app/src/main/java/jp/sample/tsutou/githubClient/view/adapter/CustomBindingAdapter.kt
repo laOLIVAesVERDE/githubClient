@@ -1,6 +1,6 @@
 package jp.sample.tsutou.githubClient.view.adapter
 
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.view.View
 
 object CustomBindingAdapter {

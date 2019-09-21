@@ -1,26 +1,42 @@
 package jp.sample.tsutou.githubClient.viewModel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 
 import jp.sample.tsutou.githubClient.R
 import jp.sample.tsutou.githubClient.service.model.Project
 import jp.sample.tsutou.githubClient.service.repository.ProjectRepository
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
- * List<Project>のrepositoryから送られてくるデータとuiイベントに責務を持つViewModel
- * 引用：実際のケースでは、結果データをObserving Viewに渡す前に変換が必要な場合があります。
- * 変換を行うには、以下のドキュメントに示すTransformationクラスを使用できます。
- * https : //developer.android.com/topic /libraries/architecture/livedata.html#transformations_of_livedata
-</Project> */
+ * List<Project>のrepositoryから送られてくるデータとuiイベントに責務を持つViewModel　
+ */
 class ProjectListViewModel(application: Application) : AndroidViewModel(application) {
 
-    //監視対象のLiveData
-    //UIが観察できるようにコンストラクタで取得したLiveDataを公開する Repositoryからインスタンスを取得し、getProjectListを呼び出し、LiveDataオブジェクトに。
-    var projectListObservable: LiveData<List<Project>> =
-            ProjectRepository
-                    .instance
-                    .getProjectList(getApplication<Application>().getString(R.string.github_user_name))
+    private val repository = ProjectRepository.instance
+    var projectListLiveData: MutableLiveData<List<Project>> = MutableLiveData()
 
+    //ViewModel初期化時にロード
+    init {
+        loadProjectList()
+    }
+
+    private fun loadProjectList() {
+
+        //viewModelScope->ViewModel.onCleared() のタイミングでキャンセルされる CoroutineScope
+        viewModelScope.launch {
+            try {
+                val request = repository.getProjectList(getApplication<Application>().getString(R.string.github_user_name))
+                if (request.isSuccessful) {
+                    //データを取得したら、LiveDataを更新
+                    projectListLiveData.postValue(request.body())
+                }
+            } catch (e: Exception) {
+                e.stackTrace
+            }
+        }
+    }
 }
