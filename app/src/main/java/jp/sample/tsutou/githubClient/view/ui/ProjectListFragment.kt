@@ -23,11 +23,10 @@ const val TAG_OF_PROJECT_LIST_FRAGMENT = "ProjectListFragment"
 
 class ProjectListFragment : Fragment() {
 
-    private var projectAdapter: ProjectAdapter? = null
-
     private val viewModel by lazy { ViewModelProviders.of(this).get(ProjectListViewModel::class.java) }
 
     private lateinit var binding: FragmentProjectListBinding
+    private lateinit var projectAdapter: ProjectAdapter
 
     private val projectClickCallback = object : ProjectClickCallback {
         override fun onClick(project: Project) {
@@ -42,12 +41,12 @@ class ProjectListFragment : Fragment() {
         //dataBinding用のレイアウトリソース
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_list, container, false)
 
+        projectAdapter = ProjectAdapter(projectClickCallback)
+
         binding.apply {
             projectList.adapter = projectAdapter
             isLoading = true
         }
-
-        projectAdapter = ProjectAdapter(projectClickCallback)
 
         return binding.root
     }
@@ -66,7 +65,7 @@ class ProjectListFragment : Fragment() {
         viewModel.projectListLiveData.observe(viewLifecycleOwner, Observer { projects ->
             if (projects != null) {
                 binding.isLoading = false
-                projectAdapter?.setProjectList(projects)
+                projectAdapter.setProjectList(projects)
             }
         })
     }

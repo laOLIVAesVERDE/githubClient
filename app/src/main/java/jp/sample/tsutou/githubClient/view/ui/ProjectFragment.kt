@@ -22,11 +22,6 @@ class ProjectFragment : Fragment() {
 
     private lateinit var binding: FragmentProjectDetailsBinding
 
-    private val factory = ProjectViewModel.Factory(
-            requireActivity().application, arguments?.getString(KEY_PROJECT_ID) ?: ""
-    )
-    private val viewModel by lazy { ViewModelProviders.of(this, factory).get(ProjectViewModel::class.java) }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_project_details, container, false)
@@ -35,6 +30,14 @@ class ProjectFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        val projectID = arguments?.getString(KEY_PROJECT_ID)
+
+        val factory = ProjectViewModel.Factory(
+                requireActivity().application, projectID ?: ""
+        )
+
+        val viewModel = ViewModelProviders.of(this, factory).get(ProjectViewModel::class.java)
 
         binding.apply {
             projectViewModel = viewModel
