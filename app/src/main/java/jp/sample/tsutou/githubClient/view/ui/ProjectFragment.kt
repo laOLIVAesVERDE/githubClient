@@ -57,7 +57,7 @@ class ProjectFragment : Fragment() {
 
     companion object {
 
-        //fidを詰め渡すFactory
+        //idを詰め渡すFactory
         fun forProject(projectID: String): ProjectFragment {
             val fragment = ProjectFragment()
             val args = Bundle()

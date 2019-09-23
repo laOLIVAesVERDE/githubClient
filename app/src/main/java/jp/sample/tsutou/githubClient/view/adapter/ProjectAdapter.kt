@@ -36,7 +36,8 @@ class ProjectAdapter(private val projectClickCallback: ProjectClickCallback?) :
                 }
 
                 override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-                    return requireNotNull(this@ProjectAdapter.projectList)[oldItemPosition].id == projectList[newItemPosition].id
+                    val oldList = this@ProjectAdapter.projectList
+                    return oldList?.get(oldItemPosition)?.id == projectList[newItemPosition].id
                 }
 
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
@@ -65,12 +66,12 @@ class ProjectAdapter(private val projectClickCallback: ProjectClickCallback?) :
     }
 
     override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
-        holder.binding.project = requireNotNull(projectList)[position]
+        holder.binding.project = projectList?.get(position)
         holder.binding.executePendingBindings()
     }
 
     override fun getItemCount(): Int {
-        return if (projectList == null) 0 else requireNotNull(projectList).size
+        return projectList?.size ?: 0
     }
 
     open class ProjectViewHolder(val binding: ProjectListItemBinding) : RecyclerView.ViewHolder(binding.root)
