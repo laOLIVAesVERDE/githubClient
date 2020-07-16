@@ -8,14 +8,39 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 
 import jp.sample.tsutou.githubClient.R
 import jp.sample.tsutou.githubClient.databinding.FragmentProjectDetailsBinding
 import jp.sample.tsutou.githubClient.viewModel.ProjectViewModel
 
-private const val KEY_PROJECT_ID = "project_id"
-
 class ProjectFragment : Fragment() {
+
+    companion object {
+        private const val KEY_PROJECT_ID = "project_id"
+
+        fun forProject(projectID: String): ProjectFragment {
+            val fragment = ProjectFragment()
+            val args = Bundle()
+            args.putString(KEY_PROJECT_ID, projectID)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
+    private val projectId by lazy {
+        requireNotNull(
+                arguments?.getString(KEY_PROJECT_ID)
+        ) {
+            "projectId must not be null"
+        }
+    }
+
+    private val viewModel by lazy {
+        ViewModelProvider(this, ProjectViewModel.Factory(
+                requireActivity().application, projectId
+        )).get(ProjectViewModel::class.java)
+    }
 
     private lateinit var binding: FragmentProjectDetailsBinding
 
@@ -25,47 +50,19 @@ class ProjectFragment : Fragment() {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        val projectID = arguments?.getString(KEY_PROJECT_ID)
-
-        val factory = ProjectViewModel.Factory(
-                requireActivity().application, projectID ?: ""
-        )
-
-        val viewModel = ViewModelProviders.of(this, factory).get(ProjectViewModel::class.java)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
             projectViewModel = viewModel
             isLoading = true
         }
 
-        observeViewModel(viewModel)
-
-    }
-
-    private fun observeViewModel(viewModel: ProjectViewModel) {
         viewModel.projectLiveData.observe(viewLifecycleOwner, Observer { project ->
             if (project != null) {
-
                 binding.isLoading = false
                 viewModel.setProject(project)
             }
         })
-    }
-
-    companion object {
-
-        //idを詰め渡すFactory
-        fun forProject(projectID: String): ProjectFragment {
-            val fragment = ProjectFragment()
-            val args = Bundle()
-
-            args.putString(KEY_PROJECT_ID, projectID)
-            fragment.arguments = args
-
-            return fragment
-        }
     }
 }

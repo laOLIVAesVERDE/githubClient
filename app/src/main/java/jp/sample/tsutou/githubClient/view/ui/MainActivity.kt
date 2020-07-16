@@ -12,9 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
-            //プロジェクト一覧のFragment
-            val fragment = ProjectListFragment()
-
+            val fragment = ProjectListFragment() //一覧のFragment
             supportFragmentManager
                     .beginTransaction()
                     .add(R.id.fragment_container, fragment, TAG_OF_PROJECT_LIST_FRAGMENT)
@@ -22,10 +20,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //詳細画面への遷移
     fun show(project: Project) {
-        val projectFragment = ProjectFragment.forProject(project.name)
-
+        val projectFragment = ProjectFragment.forProject(project.name) //詳細のFragment
         supportFragmentManager
                 .beginTransaction()
                 .addToBackStack("project")

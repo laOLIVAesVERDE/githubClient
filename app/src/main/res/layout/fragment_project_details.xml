@@ -82,7 +82,6 @@
                 android:textSize="@dimen/project_text"
                 android:text="@{String.format(@string/openIssues, projectViewModel.project.open_issues)}"/>
 
-
             <TextView
                 android:id="@+id/project_created_at"
                 android:layout_width="match_parent"

@@ -21,11 +21,8 @@ class ProjectAdapter(private val projectClickCallback: ProjectClickCallback?) :
 
         if (this.projectList == null) {
             this.projectList = projectList
-
             notifyItemRangeInserted(0, projectList.size)
-
         } else {
-
             val result = DiffUtil.calculateDiff(object : DiffUtil.Callback() {
                 override fun getOldListSize(): Int {
                     return requireNotNull(this@ProjectAdapter.projectList).size
@@ -43,25 +40,20 @@ class ProjectAdapter(private val projectClickCallback: ProjectClickCallback?) :
                 override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
                     val project = projectList[newItemPosition]
                     val old = projectList[oldItemPosition]
-
                     return project.id == old.id && project.git_url == old.git_url
                 }
             })
             this.projectList = projectList
-
             result.dispatchUpdatesTo(this)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewtype: Int): ProjectViewHolder {
-        val binding =
-                DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        R.layout.project_list_item, parent,
-                        false) as ProjectListItemBinding
-
+        val binding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.project_list_item, parent,
+                false) as ProjectListItemBinding
         binding.callback = projectClickCallback
-
         return ProjectViewHolder(binding)
     }
 
