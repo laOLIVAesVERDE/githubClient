@@ -19,12 +19,8 @@ class ProjectFragment : Fragment() {
     companion object {
         private const val KEY_PROJECT_ID = "project_id"
 
-        fun forProject(projectID: String): ProjectFragment {
-            val fragment = ProjectFragment()
-            val args = Bundle()
-            args.putString(KEY_PROJECT_ID, projectID)
-            fragment.arguments = args
-            return fragment
+        fun forProject(projectId: String) = ProjectFragment().apply {
+            arguments = Bundle().apply { putString(KEY_PROJECT_ID, projectId) }
         }
     }
 
@@ -59,9 +55,9 @@ class ProjectFragment : Fragment() {
         }
 
         viewModel.projectLiveData.observe(viewLifecycleOwner, Observer { project ->
-            if (project != null) {
+            project?.let {
                 binding.isLoading = false
-                viewModel.setProject(project)
+                viewModel.setProject(it)
             }
         })
     }

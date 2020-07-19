@@ -47,9 +47,9 @@ class ProjectListFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel.projectListLiveData.observe(viewLifecycleOwner, Observer { projects ->
-            if (projects != null) {
+            projects?.let {
                 binding.isLoading = false
-                projectAdapter.setProjectList(projects)
+                projectAdapter.setProjectList(it)
             }
         })
     }
