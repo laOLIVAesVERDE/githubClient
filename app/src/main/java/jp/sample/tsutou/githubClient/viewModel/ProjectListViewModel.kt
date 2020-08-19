@@ -22,9 +22,9 @@ class ProjectListViewModel(application: Application) : AndroidViewModel(applicat
 
     private fun loadProjectList() = viewModelScope.launch { //onCleared() のタイミングでキャンセルされる
         try {
-            val request = repository.getProjectList(getApplication<Application>().getString(R.string.github_user_name))
-            if (request.isSuccessful) {
-                projectListLiveData.postValue(request.body()) //データを取得したら、LiveDataを更新
+            val response = repository.getProjectList(getApplication<Application>().getString(R.string.github_user_name))
+            if (response.isSuccessful) {
+                projectListLiveData.postValue(response.body()) //データを取得したら、LiveDataを更新
             }
         } catch (e: Exception) {
             e.stackTrace
