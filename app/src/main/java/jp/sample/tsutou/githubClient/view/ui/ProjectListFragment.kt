@@ -52,7 +52,9 @@ class ProjectListFragment : Fragment() {
                 binding.isLoading = false
                 projectAdapter.setProjectList(it)
             }
-            Log.d("ConfirmProjects", projects.toString())
+            projects.forEach { project ->
+                Log.d("ConfirmProjectName", project.name)
+            }
         })
     }
 }
